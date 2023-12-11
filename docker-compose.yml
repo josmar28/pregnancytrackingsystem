@@ -1,0 +1,77 @@
+version: "3.9"
+services:
+  webserver:
+    image: nginx:alpine
+    restart: unless-stopped
+    volumes:
+      - ./api/public:/var/www/public:ro
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    ports:
+      - "${WEBSERVER_API_PORT:-8000}:80"
+      - "${WEBSERVER_CLIENT_PORT:-3000}:81"
+    depends_on:
+      - api
+      - client
+
+  api:
+    image: api
+    build:
+      context: ./api
+    depends_on:
+      - redis
+      - pgsql
+    environment:
+      CONTAINER_ROLE: app
+
+  worker:
+    image: api
+    build:
+      context: ./api
+    depends_on:
+      - api
+    environment:
+      CONTAINER_ROLE: worker
+    restart: unless-stopped
+
+  pgsql:
+    image: postgres
+    container_name: postgres
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgAdmin
+    depends_on:
+      - pgsql
+
+  client:
+    image: client
+    build:
+      context: ./client
+
+  redis:
+    image: redis:7.0.9-alpine
+    volumes:
+      - redis-data:/data
+
+  websocket:
+    image: "quay.io/soketi/soketi:latest-16-alpine"
+    environment:
+      SOKETI_DEBUG: "${SOKETI_DEBUG:-1}"
+      SOKETI_METRICS_SERVER_PORT: "9601"
+      SOKETI_DEFAULT_APP_ID: "${SOKETI_DEFAULT_APP_ID:-app-id}"
+      SOKETI_DEFAULT_APP_KEY: "${SOKETI_DEFAULT_APP_KEY:-app-key}"
+      SOKETI_DEFAULT_APP_SECRET: "${SOKETI_DEFAULT_APP_SECRET:-app-secret}"
+      SOKETI_DEFAULT_APP_ENABLE_CLIENT_MESSAGES: "${SOKETI_DEFAULT_APP_ENABLE_CLIENT_MESSAGES:-false}"
+      SOKETI_DB_REDIS_HOST: "redis"
+      SOKETI_DB_REDIS_DB: "3"
+    ports:
+      - "${SOKETI_PORT:-6001}:6001"
+      - "${SOKETI_METRICS_SERVER_PORT:-9601}:9601"
+
+volumes:
+  mysql-data:
+    driver: local
+  redis-data:
+    driver: local
