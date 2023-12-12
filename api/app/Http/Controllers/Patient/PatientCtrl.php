@@ -11,18 +11,19 @@ use App\Http\Requests\Patient\UpsertPatientRequest;
 use App\Http\Requests\Patient\PatientRequest;
 use App\Services\Patient\PatientServices;
 use App\Http\Resources\Patient\PatientResource;
-use App\Repositories\PermissionRepository;
+use App\Repositories\PatientRepository;
+use Illuminate\Http\Response;
 
 class PatientCtrl extends Controller
 {
     private PatientServices $PatientServices;
-	private PermissionRepository $permissionRepository;
+	private PatientRepository $patientRepository;
 
 
-    public function __construct(PatientServices $PatientServices, PermissionRepository $permissionRepository)
+    public function __construct(PatientServices $PatientServices, PatientRepository $patientRepository)
 	{
 		$this->PatientServices = $PatientServices;
-		$this->permissionRepository = $permissionRepository;
+		$this->patientRepository = $patientRepository;
 
 		$this->authorizeResource(Patient::class);
 	}
@@ -43,24 +44,42 @@ class PatientCtrl extends Controller
 		)->respond();
 	}
 
-	public function show(Patient $role)
+	public function show(Patient $patient)
 	{
-		$patients->load('permissions');
-
 		return Responder::setData(
-			new PatientResource($patients)
+			new PatientResource($patient)
 		)->respond();
+	}
+
+	public function update(Patient $patient, UpsertPatientRequest $request)
+	{
+		$this->PatientServices->updatePatient(
+			$patient,
+			$request->only(['first_name', 'last_name', 'gender', 'contact','status'])
+		);
+
+		return Responder::setData(new PatientServices($patient))
+			->setMessage(trans('dashboard.updated_successfully'))
+			->respond();
 	}
 
 	public function store(UpsertPatientRequest $request)
 	{
 		$patient = $this->PatientServices->createPatient(
-			$request->only(['first_name', 'last_name', 'gender', 'contact'])
+			$request->only(['first_name', 'last_name', 'gender', 'contact','status'])
 		);
 
 		return Responder::setData(new PatientServices($patient))
 			->setMessage(trans('dashboard.created_successfully'))
 			->setStatusCode(Response::HTTP_CREATED)
+			->respond();
+	}
+
+	public function destroy(Patient $patient)
+	{
+		$this->PatientServices->deletePatient($patient);
+
+		return Responder::setMessage(trans('dashboard.deleted_successfully'))
 			->respond();
 	}
 }

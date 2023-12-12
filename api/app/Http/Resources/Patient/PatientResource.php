@@ -13,7 +13,7 @@ class PatientResource extends JsonResource
     use ResourcePolicyTrait;
 
 	/**
-	 * @var UserPolicy
+	 * @var PatientPolicy
 	 */
 	protected static $policy;
     /**
@@ -34,6 +34,7 @@ class PatientResource extends JsonResource
 				'can_view' => self::$policy->view(Auth::user(), $this->resource),
 				'can_update' => self::$policy->update(Auth::user(), $this->resource),
 				'can_delete' => self::$policy->delete(Auth::user(), $this->resource),
+                'can_history' => self::$policy->history(Auth::user(), $this->resource),
 			]
 		];
     }

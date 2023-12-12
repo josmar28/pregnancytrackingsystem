@@ -45,12 +45,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
 	Route::prefix('patients')->as('patients.')->controller(PatientCtrl::class)->group(function () {
 		Route::get('/', 'index')->name('index');
-		Route::get('list', 'list')->name('permissions');
-		Route::get('permissions', 'permissions')->name('permissions');
-		Route::get('{role}', 'show')->name('show');
+		Route::get('{patient}', 'show')->name('show');
 		Route::post('/', 'store')->name('store');
-		Route::put('{role}', 'update')->name('update');
-		Route::delete('{role}', 'destroy')->name('delete');
+		Route::put('{patient}', 'update')->name('update');
+		Route::delete('{patient}', 'destroy')->name('delete');
 	});
 });
 

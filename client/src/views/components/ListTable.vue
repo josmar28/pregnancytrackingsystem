@@ -63,43 +63,9 @@
       <!-- Column: Actions -->
       <template #cell(actions)="data">
         <div class="text-nowrap">
-          <b-button
-            v-if="canView(data.item)"
-            class="btn-icon px-8px"
-            variant="flat-default"
-            tabindex="0"
-            v-b-tooltip.hover
-            :title="$t(`modules.${resource}.details`)"
-            @click="
-              $router.push({
-                name: `${resource}.view`,
-                params: { id: data.item.id },
-              })
-            "
-          >
-            <feather-icon icon="EyeIcon" size="16" />
-          </b-button>
-
-          <b-button
-            v-if="canUpdate(data.item)"
-            class="btn-icon px-8px"
-            variant="flat-default"
-            tabindex="0"
-            v-b-tooltip.hover
-            :title="$t(`modules.${resource}.edit`)"
-            @click="
-              $router.push({
-                name: `${resource}.edit`,
-                params: { id: data.item.id },
-              })
-            "
-          >
-            <feather-icon icon="EditIcon" size="16" />
-          </b-button>
-
           <b-dropdown
             v-if="
-              canDelete(data.item) ||
+              actions ||
               (custom_dropdown_actions_slots &&
                 custom_dropdown_actions_slots.length)
             "
@@ -111,7 +77,8 @@
             <template #button-content>
               <feather-icon
                 icon="MoreVerticalIcon"
-                size="16"
+                siz
+                e="16"
                 class="align-middle text-body"
               />
             </template>
@@ -124,7 +91,43 @@
             ></slot>
 
             <b-dropdown-item
+              v-if="canView(data.item)"
+              tabindex="0"
+              v-b-tooltip.hover
+              :title="$t(`modules.${resource}.details`)"
+              @click="
+                $router.push({
+                  name: `${resource}.view`,
+                  params: { id: data.item.id },
+                })
+              "
+            >
+              <feather-icon icon="EyeIcon" size="16" />
+              <span class="align-middle ml-50">{{ $t("View") }}</span>
+            </b-dropdown-item>
+
+            <b-dropdown-item
+              v-if="canUpdate(data.item)"
+              variant="flat-default"
+              tabindex="0"
+              v-b-tooltip.hover
+              :title="$t(`modules.${resource}.edit`)"
+              @click="
+                $router.push({
+                  name: `${resource}.edit`,
+                  params: { id: data.item.id },
+                })
+              "
+            >
+              <feather-icon icon="EditIcon" />
+              <span class="align-middle ml-50">{{ $t("Edit") }}</span>
+            </b-dropdown-item>
+
+            <b-dropdown-item
               v-if="canDelete(data.item)"
+              tabindex="0"
+              v-b-tooltip.hover
+              :title="$t(`modules.${resource}.delete`)"
               @click="openDeleteModal(data.item)"
             >
               <feather-icon icon="TrashIcon" />
@@ -262,7 +265,6 @@ export default {
       this.$http
         .get(this.getApiUrl())
         .then(({ data }) => {
-          console.log(data);
           this.pagination.total = data.meta.total;
           this.pagination.count = data.data.length;
           this.pagination.from = data.meta.from;

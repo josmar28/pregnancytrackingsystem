@@ -56,7 +56,7 @@
           :title="$t(`modules.histories.details`)"
           @click="
             $router.push({
-              name: `histories.index`,
+              name: `histories.edit`,
               params: { id: item.id },
             })
           "

@@ -34,8 +34,8 @@ class PatientsPolicy
 		return $user->can('delete role') && $model->getKey() !== 1;
 	}
 
-	public function changeStatus(Authorizable $user, Role $model)
+	public function history(Authorizable $user, Role $model)
 	{
-		return $user->can('changeStatus role') && $model->getKey() !== 1;
+		return $user->can('view history') && $model->getKey() !== 1;
 	}
 }

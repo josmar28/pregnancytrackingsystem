@@ -17,7 +17,7 @@ class SearchPatientRequest extends BaseDashboardRequest
         return [
 			...$this->getPaginationRules(allowedSortColumns: 
             [
-                'id', 'first_name','last_name','created_at','contact','gender',
+                'id', 'first_name','last_name','created_at','contact','gender','status'
             ]),
 
 			'name' => ['nullable', 'string', 'max:255'],

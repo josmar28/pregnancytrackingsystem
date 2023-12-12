@@ -40,7 +40,6 @@
                       <b-form-input
                         id="last_name"
                         v-model="form.last_name"
-                        type="last_name"
                         :state="errors.length > 0 ? false : null"
                         :placeholder="$t('Last Name')"
                       />
@@ -59,17 +58,15 @@
                     rules="required"
                   >
                     <b-form-radio
-                      v-model="selected"
-                      :aria-describedby="ariaDescribedby"
-                      name="some-radios"
-                      value="A"
+                      v-model="form.gender"
+                      name="gender"
+                      value="male"
                       >Male</b-form-radio
                     >
                     <b-form-radio
-                      v-model="selected"
-                      :aria-describedby="ariaDescribedby"
-                      name="some-radios"
-                      value="B"
+                      v-model="form.gender"
+                      name="gender"
+                      value="female"
                       >Female</b-form-radio
                     >
                     <small class="text-danger">{{ errors[0] }}</small>
@@ -77,16 +74,40 @@
                 </b-form-group>
               </b-col>
 
-              <!-- mobile -->
               <b-col cols="6">
-                <b-form-group label-for="mobile" :label="$t('Mobile')">
+                <b-form-group :label="$t('Status')" label-for="status">
                   <validation-provider
                     #default="{ errors }"
-                    name="mobile"
+                    name="status"
+                    vid="status"
                     rules="required"
-                    vid="mobile"
                   >
-                    <Mobile v-model="form.mobile" :errors="errors" />
+                    <b-form-radio
+                      v-model="form.status"
+                      name="status"
+                      value="active"
+                      >Active</b-form-radio
+                    >
+                    <b-form-radio
+                      v-model="form.status"
+                      name="status"
+                      value="inactive"
+                      >Inactive</b-form-radio
+                    >
+                    <small class="text-danger">{{ errors[0] }}</small>
+                  </validation-provider>
+                </b-form-group>
+              </b-col>
+              <!-- mobile -->
+              <b-col cols="6">
+                <b-form-group label-for="contact" :label="$t('Contact')">
+                  <validation-provider
+                    #default="{ errors }"
+                    name="contact"
+                    rules="required"
+                    vid="contact"
+                  >
+                    <Mobile v-model="form.contact" :errors="errors" />
 
                     <small class="text-danger">{{ errors[0] }}</small>
                   </validation-provider>
@@ -142,6 +163,7 @@ export default {
         last_name: null,
         contact: null,
         gender: null,
+        status: null,
       },
       id: this.$route.params.id,
       processing: false,
@@ -195,6 +217,7 @@ export default {
               last_name: data.last_name,
               contact: data.contact,
               gender: data.gender,
+              status: data.status,
             };
           });
         })

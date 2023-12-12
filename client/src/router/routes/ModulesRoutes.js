@@ -7,6 +7,7 @@ const modulesRoutes = [
   { name: "users", singular: "user" },
   { name: "roles", singular: "role" },
   { name: "patients", singular: "patient" },
+  { name: "histories", singular: "history" },
 ];
 modulesRoutes.forEach(function (item) {
   routes.push({
