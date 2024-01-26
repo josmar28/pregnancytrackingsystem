@@ -32,8 +32,4 @@ class PatientPolicy
 		return $user->can('delete patient') && $model->getKey() !== 1;
 	}
 
-	public function history(Authorizable $user, Patient $model)
-	{
-		return $user->can('view history');
-	}
 }

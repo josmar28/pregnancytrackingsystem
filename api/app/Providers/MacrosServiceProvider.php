@@ -11,6 +11,10 @@ class MacrosServiceProvider extends ServiceProvider
 {
     public function register()
     {
+        Builder::macro('formatDate', function ($column, $format) {
+            return $this->selectRaw("TO_CHAR($column, '$format') as formatted_$column");
+        });
+
         Builder::macro('whereLike', function ($column, $value) {
             $this->where($column, 'pgsql' == Model::getConnectionResolver()->getDefaultConnection() ? 'ilike' : 'like', "%{$value}%");
 

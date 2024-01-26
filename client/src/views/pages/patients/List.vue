@@ -49,22 +49,6 @@
       :columns="columns"
       :actions="actions"
     >
-      <template #custom_dropdown_actions="{ item }">
-        <b-dropdown-item
-          v-if="item.actions.can_history"
-          v-b-tooltip.hover
-          :title="$t(`modules.histories.details`)"
-          @click="
-            $router.push({
-              name: `histories.index`,
-              params: { id: item.id },
-            })
-          "
-        >
-          <feather-icon icon="EyeIcon" size="16" />
-          <span class="align-middle ml-50">{{ $t("View History") }}</span>
-        </b-dropdown-item>
-      </template>
     </list-table>
   </div>
 </template>
@@ -125,6 +109,12 @@ export default {
         { key: "gender", label: "Gender", sortable: true },
         { key: "contact", label: "Contact Number", sortable: true },
         { key: "status", label: "Status", sortable: true },
+        {
+          key: "created_at",
+          label: "Created at",
+          sortable: true,
+          formatter: this.formatCreatedAt,
+        },
         { key: "actions" },
       ];
     },
@@ -134,7 +124,21 @@ export default {
       { text: this.$t("modules.patients.patients"), active: true },
     ]);
   },
-  methods: {},
+  methods: {
+    formatCreatedAt(value) {
+      const options = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: true,
+      };
+
+      return new Date(value).toLocaleString("en-US", options);
+    },
+  },
   setup() {
     const { roles } = getRoles();
 

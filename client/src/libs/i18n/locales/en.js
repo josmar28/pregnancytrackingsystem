@@ -236,6 +236,7 @@ export default {
       details: "Patient Details",
       patients: "Patients Lists",
       patient: "Patient",
+      patientss: "Patients",
     },
     histories: {
       create: "Create History",

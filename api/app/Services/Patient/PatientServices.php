@@ -23,10 +23,10 @@ class PatientServices
     public function getPatients(array $sort = [], array $pagination = [], array $filters = []): LengthAwarePaginator
 	{
 		return $this->model
-			->select(['*'])
+			->select('*')
 			->orderBy($sort['column'] ?? 'id', $sort['direction'] ?? 'desc')
-			->presentWhereLike('first_name', Arr::get($filters, 'name'))
-            ->presentWhereLike('last_name', Arr::get($filters, 'name'))
+			->presentWhereLike('last_name', Arr::get($filters, 'name'))
+			->orWhereLike('first_name', Arr::get($filters, 'name'))
 			->presentWhereDate('created_at', '>=', Arr::get($filters, 'from_date'))
 			->presentWhereDate('created_at', '<=', Arr::get($filters, 'to_date'))
 			->paginate(

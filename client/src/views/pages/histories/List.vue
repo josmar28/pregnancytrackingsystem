@@ -43,35 +43,21 @@
     </b-card>
 
     <list-table
-      resource="patients"
-      api-path="/api/patients"
+      resource="histories"
+      api-path="/api/histories"
       :filters="filters"
       :columns="columns"
       :actions="actions"
     >
-      <template #custom_dropdown_actions="{ item }">
-        <b-dropdown-item
-          v-if="item.actions.can_history"
-          v-b-tooltip.hover
-          :title="$t(`modules.histories.details`)"
-          @click="
-            $router.push({
-              name: `histories.index`,
-              params: { id: item.id },
-            })
-          "
-        >
-          <feather-icon icon="EyeIcon" size="16" />
-          <span class="align-middle ml-50">{{ $t("View History") }}</span>
-        </b-dropdown-item>
-      </template>
     </list-table>
+
+    <patient-list-modal v-model="showPatientListModal"></patient-list-modal>
   </div>
 </template>
-
 <script>
 import { avatarText } from "@core/utils/filter";
 import ListTable from "../../components/ListTable";
+import PatientListModal from "../../components/modals/PatientListModal";
 import { SET_BREADCRUMB } from "@/store/breadcrumbs.store";
 import { resolveStatusVariant } from "@core/mixins/helpers";
 import { getRoles } from "@core/comp-functions/roles";
@@ -79,6 +65,7 @@ import { getRoles } from "@core/comp-functions/roles";
 export default {
   components: {
     ListTable,
+    PatientListModal,
   },
   data() {
     return {
@@ -114,6 +101,7 @@ export default {
           value: null,
         },
       },
+      showPatientListModal: false,
     };
   },
   computed: {
@@ -131,8 +119,9 @@ export default {
   },
   mounted() {
     this.$store.dispatch(SET_BREADCRUMB, [
-      { text: this.$t("modules.patients.patients"), active: true },
+      { text: this.$t("modules.histories.histories"), active: true },
     ]);
+    this.showPatientListModal = true;
   },
   methods: {},
   setup() {

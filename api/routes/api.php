@@ -50,5 +50,13 @@ Route::middleware('auth:sanctum')->group(function () {
 		Route::put('{patient}', 'update')->name('update');
 		Route::delete('{patient}', 'destroy')->name('delete');
 	});
+
+	Route::prefix('histories')->as('histories.')->controller(PatientCtrl::class)->group(function () {
+		Route::get('/', 'index')->name('index');
+		Route::get('{history}', 'show')->name('show');
+		Route::post('/', 'store')->name('store');
+		Route::put('{history}', 'update')->name('update');
+		Route::delete('{history}', 'destroy')->name('delete');
+	});
 });
 

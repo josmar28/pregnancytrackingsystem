@@ -43,28 +43,12 @@
     </b-card>
 
     <list-table
-      resource="patients"
-      api-path="/api/patients"
+      resource="histories"
+      api-path="/api/histories"
       :filters="filters"
       :columns="columns"
       :actions="actions"
     >
-      <template #custom_dropdown_actions="{ item }">
-        <b-dropdown-item
-          v-if="item.actions.can_history"
-          v-b-tooltip.hover
-          :title="$t(`modules.histories.details`)"
-          @click="
-            $router.push({
-              name: `histories.edit`,
-              params: { id: item.id },
-            })
-          "
-        >
-          <feather-icon icon="EyeIcon" size="16" />
-          <span class="align-middle ml-50">{{ $t("View History") }}</span>
-        </b-dropdown-item>
-      </template>
     </list-table>
   </div>
 </template>
@@ -131,7 +115,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch(SET_BREADCRUMB, [
-      { text: this.$t("modules.patients.patients"), active: true },
+      { text: this.$t("modules.histories.histories"), active: true },
     ]);
   },
   methods: {},
