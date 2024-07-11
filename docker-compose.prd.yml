@@ -17,12 +17,13 @@ services:
     env_file:
       - ./api/.env.prd
 
-  mysql:
+  pgsql:
     environment:
-      MYSQL_DATABASE: laravel
-      MYSQL_ROOT_PASSWORD: laravel
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: laravel
+      POSTGRES_DB: blog
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
 
   client:
     build:

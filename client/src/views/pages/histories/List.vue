@@ -42,20 +42,14 @@
       </b-card-body>
     </b-card>
 
-    <list-table
-      resource="patients"
-      api-path="/api/patients"
-      :filters="filters"
-      :columns="columns"
-      :actions="actions"
-    >
-    </list-table>
+    <patient-list-modal resource="patients" v-model="showPatientListModal">
+    </patient-list-modal>
   </div>
 </template>
-
 <script>
 import { avatarText } from "@core/utils/filter";
 import ListTable from "../../components/ListTable";
+import PatientListModal from "../../components/modals/PatientListModal";
 import { SET_BREADCRUMB } from "@/store/breadcrumbs.store";
 import { resolveStatusVariant } from "@core/mixins/helpers";
 import { getRoles } from "@core/comp-functions/roles";
@@ -63,6 +57,7 @@ import { getRoles } from "@core/comp-functions/roles";
 export default {
   components: {
     ListTable,
+    PatientListModal,
   },
   data() {
     return {
@@ -98,6 +93,7 @@ export default {
           value: null,
         },
       },
+      showPatientListModal: false,
     };
   },
   computed: {
@@ -109,36 +105,17 @@ export default {
         { key: "gender", label: "Gender", sortable: true },
         { key: "contact", label: "Contact Number", sortable: true },
         { key: "status", label: "Status", sortable: true },
-        {
-          key: "created_at",
-          label: "Created at",
-          sortable: true,
-          formatter: this.formatCreatedAt,
-        },
         { key: "actions" },
       ];
     },
   },
   mounted() {
     this.$store.dispatch(SET_BREADCRUMB, [
-      { text: this.$t("modules.patients.patients"), active: true },
+      { text: this.$t("modules.histories.histories"), active: true },
     ]);
+    this.showPatientListModal = true;
   },
-  methods: {
-    formatCreatedAt(value) {
-      const options = {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-        hour12: true,
-      };
-
-      return new Date(value).toLocaleString("en-US", options);
-    },
-  },
+  methods: {},
   setup() {
     const { roles } = getRoles();
 

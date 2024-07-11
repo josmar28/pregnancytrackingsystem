@@ -178,7 +178,7 @@ export default {
         .then((success) => {
           if (success) {
             this.$http[this.id ? "put" : "post"](
-              "/api/patients" + (this.id ? `/${this.id}` : ""),
+              "/api/histories" + (this.id ? `/${this.id}` : ""),
               this.form
             )
               .then(({ data }) => {
@@ -188,7 +188,7 @@ export default {
                   data.message,
                   "CheckIcon"
                 );
-                this.$router.push({ name: "patients.index" });
+                this.$router.push({ name: "histories.index" });
               })
               .catch((error) =>
                 this.handleResponseError(error, this.$refs.form)
@@ -208,7 +208,7 @@ export default {
   created() {
     if (this.id) {
       this.$http
-        .get(`/api/patients/${this.id}`)
+        .get(`/api/histories/${this.id}`)
         .then((response) => {
           const data = response.data.data;
           this.$nextTick(() => {
@@ -227,13 +227,13 @@ export default {
   mounted() {
     this.$store.dispatch(SET_BREADCRUMB, [
       {
-        text: this.$t("modules.patients.patients"),
-        to: { name: "patients.index" },
+        text: this.$t("modules.histories.histories"),
+        to: { name: "histories.index" },
       },
       {
         text: this.id
-          ? this.$t("modules.patients.edit")
-          : this.$t("modules.patients.create"),
+          ? this.$t("modules.histories.edit")
+          : this.$t("modules.histories.create"),
         active: true,
       },
     ]);

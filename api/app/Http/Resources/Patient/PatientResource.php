@@ -13,7 +13,7 @@ class PatientResource extends JsonResource
     use ResourcePolicyTrait;
 
 	/**
-	 * @var UserPolicy
+	 * @var PatientPolicy
 	 */
 	protected static $policy;
     /**
@@ -30,6 +30,7 @@ class PatientResource extends JsonResource
 			'gender' => $this->gender,
             'contact' => $this->contact,
             'status' => $this->status,
+            'created_at' => $this->created_at,
             'actions' => [
 				'can_view' => self::$policy->view(Auth::user(), $this->resource),
 				'can_update' => self::$policy->update(Auth::user(), $this->resource),

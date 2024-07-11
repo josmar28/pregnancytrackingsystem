@@ -35,9 +35,29 @@
         </b-col>
       </b-row>
     </div>
+
+    <b-alert
+      :show="dismissCountDown"
+      dismissible
+      variant="warning"
+      @dismissed="dismissCountDown = 0"
+      @dismiss-count-down="countDownChanged"
+    >
+      <p>This alert will dismiss after {{ dismissCountDown }} seconds...</p>
+      <b-progress
+        variant="warning"
+        :max="dismissSecs"
+        :value="dismissCountDown"
+        height="4px"
+      ></b-progress>
+    </b-alert>
+    <p>
+      Selected Rows:<br />
+      {{ selected }}
+    </p>
     <b-table
       :busy="processing"
-      ref="table"
+      ref="selectableTable"
       class="position-relative"
       :items="fetchData"
       responsive
@@ -46,8 +66,10 @@
       show-empty
       empty-text="No matching records found"
       striped
+      :select-mode="selectMode"
       :sort-by.sync="internalSort.column"
       :sort-desc.sync="internalSort.isSortDirDesc"
+      @row-clicked="onRowClicked"
     >
       <template v-for="(_, name) in $scopedSlots" #[name]="data">
         <slot :name="name" v-bind="data" />
@@ -62,79 +84,7 @@
 
       <!-- Column: Actions -->
       <template #cell(actions)="data">
-        <div class="text-nowrap">
-          <b-dropdown
-            v-if="
-              actions ||
-              (custom_dropdown_actions_slots &&
-                custom_dropdown_actions_slots.length)
-            "
-            variant="link"
-            no-caret
-            :right="$store.state.appConfig.isRTL"
-            toggle-class="p-0"
-          >
-            <template #button-content>
-              <feather-icon
-                icon="MoreVerticalIcon"
-                siz
-                e="16"
-                class="align-middle text-body"
-              />
-            </template>
-
-            <!-- DROPDOWN ACTIONS SLOTS PASSED HERE -->
-            <slot
-              v-if="custom_dropdown_actions_slots"
-              name="custom_dropdown_actions"
-              :item="data.item"
-            ></slot>
-
-            <b-dropdown-item
-              v-if="canView(data.item)"
-              tabindex="0"
-              v-b-tooltip.hover
-              :title="$t(`modules.${resource}.details`)"
-              @click="
-                $router.push({
-                  name: `${resource}.view`,
-                  params: { id: data.item.id },
-                })
-              "
-            >
-              <feather-icon icon="EyeIcon" size="16" />
-              <span class="align-middle ml-50">{{ $t("View") }}</span>
-            </b-dropdown-item>
-
-            <b-dropdown-item
-              v-if="canUpdate(data.item)"
-              variant="flat-default"
-              tabindex="0"
-              v-b-tooltip.hover
-              :title="$t(`modules.${resource}.edit`)"
-              @click="
-                $router.push({
-                  name: `${resource}.edit`,
-                  params: { id: data.item.id },
-                })
-              "
-            >
-              <feather-icon icon="EditIcon" />
-              <span class="align-middle ml-50">{{ $t("Edit") }}</span>
-            </b-dropdown-item>
-
-            <b-dropdown-item
-              v-if="canDelete(data.item)"
-              tabindex="0"
-              v-b-tooltip.hover
-              :title="$t(`modules.${resource}.delete`)"
-              @click="openDeleteModal(data.item)"
-            >
-              <feather-icon icon="TrashIcon" />
-              <span class="align-middle ml-50">{{ $t("Delete") }}</span>
-            </b-dropdown-item>
-          </b-dropdown>
-        </div>
+        <div class="text-nowrap"></div>
       </template>
     </b-table>
 
@@ -256,9 +206,20 @@ export default {
         from: 0,
         to: 0,
       },
+      dismissSecs: 10,
+      dismissCountDown: 0,
+      showDismissibleAlert: false,
+      selectMode: "multi",
+      selected: [],
     };
   },
   methods: {
+    onRowClicked(item) {
+      this.$router.push({
+        name: `${this.resource}.edit`,
+        params: { id: item.id },
+      });
+    },
     fetchData(ctx, callback) {
       if (this.processing === true) return false;
       this.processing = true;
@@ -337,6 +298,12 @@ export default {
     },
     canUpdate(row) {
       return this.actions.update && row.actions && row.actions.can_update;
+    },
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown;
+    },
+    showAlert() {
+      this.dismissCountDown = this.dismissSecs;
     },
   },
   watch: {

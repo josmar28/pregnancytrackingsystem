@@ -23,10 +23,10 @@ class PatientServices
     public function getPatients(array $sort = [], array $pagination = [], array $filters = []): LengthAwarePaginator
 	{
 		return $this->model
-			->select(['*'])
+			->select('*')
 			->orderBy($sort['column'] ?? 'id', $sort['direction'] ?? 'desc')
-			->presentWhereLike('first_name', Arr::get($filters, 'name'))
-            ->presentWhereLike('last_name', Arr::get($filters, 'name'))
+			->presentWhereLike('last_name', Arr::get($filters, 'name'))
+			->orWhereLike('first_name', Arr::get($filters, 'name'))
 			->presentWhereDate('created_at', '>=', Arr::get($filters, 'from_date'))
 			->presentWhereDate('created_at', '<=', Arr::get($filters, 'to_date'))
 			->paginate(
@@ -34,13 +34,13 @@ class PatientServices
 			);
 	}
 
-	public function createPatient(array $attributes): Role
+	public function createPatient(array $attributes): Patient
 	{
 		try {
 			DB::beginTransaction();
 
 			$patient = $this->model->newModelInstance(
-				Arr::only($attributes, ['first_name', 'last_name', 'gender', 'contact'])
+				Arr::only($attributes, ['first_name', 'last_name', 'gender', 'contact','status'])
 			);
 			$patient->save();
 
@@ -52,5 +52,37 @@ class PatientServices
 		}
 
 		return $patient;
+	}
+
+	public function updatePatient(Patient $patient, array $attributes): void
+	{
+		try {
+			DB::beginTransaction();
+
+			$patient->update(
+				Arr::only($attributes, ['first_name', 'last_name', 'gender', 'contact','status'])
+			);
+
+			DB::commit();
+		} catch (\Exception $exception) {
+			DB::rollBack();
+
+			throw $exception;
+		}
+	}
+		
+		public function deletePatient(Patient $patient): void
+	{
+		try {
+			DB::beginTransaction();
+
+			$patient->delete();
+
+			DB::commit();
+		} catch (\Exception $exception) {
+			DB::rollBack();
+
+			throw $exception;
+		}
 	}
 }

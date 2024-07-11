@@ -32,8 +32,4 @@ class PatientPolicy
 		return $user->can('delete patient') && $model->getKey() !== 1;
 	}
 
-	public function changeStatus(Authorizable $user, Patient $model)
-	{
-		return $user->can('changeStatus patient') && $model->getKey() !== 1;
-	}
 }

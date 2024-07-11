@@ -25,6 +25,7 @@ class PermissionSeeder extends Seeder
 			'users' => ['viewAny', 'view', 'create', 'update', 'delete', 'changeStatus', 'resetPassword'],
 			'roles' => ['viewAny', 'view', 'create', 'update', 'delete'],
 			'patients' => ['viewAny', 'view', 'create', 'update', 'delete'],
+			'histories' => ['viewAny', 'view', 'create', 'update', 'delete'],
 		]);
 
 		$collection->each(function ($item, $index) {

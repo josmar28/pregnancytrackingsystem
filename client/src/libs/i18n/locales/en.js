@@ -216,6 +216,7 @@ export default {
     users: {
       create: "Create User",
       edit: "Edit User",
+      delete: "Delete User",
       details: "User Details",
       users: "Users",
       user: "User",
@@ -223,6 +224,7 @@ export default {
     roles: {
       create: "Create Role",
       edit: "Edit Role",
+      delete: "Delete Role",
       details: "Role Details",
       roles: "Roles",
       role: "Role",
@@ -230,9 +232,19 @@ export default {
     patients: {
       create: "Create Patient",
       edit: "Edit Patient",
+      delete: "Delete Patient",
       details: "Patient Details",
       patients: "Patients Lists",
       patient: "Patient",
+      patientss: "Patients",
+    },
+    histories: {
+      create: "Create History",
+      edit: "Edit History",
+      delete: "Delete History",
+      details: "History Details",
+      histories: "History Lists",
+      history: "History",
     },
   },
   active_status_list: [

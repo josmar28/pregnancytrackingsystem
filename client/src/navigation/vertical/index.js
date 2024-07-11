@@ -1,66 +1,63 @@
 export default [
-  {
-    title: "Dashboard",
-    route: "dashboard",
-    icon: "BarChart2Icon",
-  },
+  // {
+  //   title: "Dashboard",
+  //   route: "dashboard",
+  //   icon: "BarChart2Icon",
+  // },
   {
     title: "Home",
     route: "home",
     icon: "HomeIcon",
   },
   {
-    title: "Patients",
+    title: "modules.patients.patientss",
     icon: "PlusIcon",
     children: [
       {
         title: "modules.patients.patients",
-        icon: "LockIcon",
+        icon: "CircleIcon",
         route: "patients.index",
       },
       {
-        title: "Accepted Patient",
-        route: "child2",
-      },
-      {
-        title: "Discharge Patient",
-        route: "child2",
+        title: "modules.histories.histories",
+        icon: "CircleIcon",
+        route: "histories.index",
       },
     ],
   },
-  {
-    title: "Transactions",
-    icon: "MonitorIcon",
-    children: [
-      {
-        title: "Refferred Patient",
-        route: "child1",
-      },
-      {
-        title: "Refferal Patient",
-        route: "child2",
-      },
-    ],
-  },
-  {
-    title: "Reports",
-    icon: "FileIcon",
-    children: [
-      {
-        title: "24 Weeks AOG",
-        route: "child1",
-      },
-      {
-        title: "Transanction Report",
-        route: "child2",
-      },
-    ],
-  },
-  {
-    title: "PTS Manual",
-    route: "",
-    icon: "BookOpenIcon",
-  },
+  // {
+  //   title: "Transactions",
+  //   icon: "MonitorIcon",
+  //   children: [
+  //     {
+  //       title: "Refferred Patient",
+  //       route: "child1",
+  //     },
+  //     {
+  //       title: "Refferal Patient",
+  //       route: "child2",
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "Reports",
+  //   icon: "FileIcon",
+  //   children: [
+  //     {
+  //       title: "24 Weeks AOG",
+  //       route: "child1",
+  //     },
+  //     {
+  //       title: "Transanction Report",
+  //       route: "child2",
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "PTS Manual",
+  //   route: "",
+  //   icon: "BookOpenIcon",
+  // },
   {
     title: "modules.roles.roles",
     icon: "LockIcon",

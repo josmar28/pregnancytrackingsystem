@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Patient;
+namespace App\Http\Controllers\History;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ use App\Http\Resources\Patient\PatientResource;
 use App\Repositories\PatientRepository;
 use Illuminate\Http\Response;
 
-class PatientCtrl extends Controller
+class HistoryCtrl extends Controller
 {
     private PatientServices $PatientServices;
 	private PatientRepository $patientRepository;

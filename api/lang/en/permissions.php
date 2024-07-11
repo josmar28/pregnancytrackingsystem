@@ -18,10 +18,17 @@ return [
 	'update role' => 'Update Role',
 	'delete role' => 'Delete Role',
 
-	'patients' => 'Patient Lists',
-	'viewAny patientlist' => 'View all Patient',
-	'view patientlist' => 'View Patient',
-	'create patientlist' => 'Create Patient',
-	'update patientlist' => 'Update Patient',
-	'delete patientlist' => 'Delete Patient',
+	'patients' => 'Patient',
+	'viewAny patient' => 'View all Patient',
+	'view patient' => 'View Patient',
+	'create patient' => 'Create Patient',
+	'update patient' => 'Update Patient',
+	'delete patient' => 'Delete Patient',
+
+	'histories' => 'History',
+	'viewAny history' => 'View all History',
+	'view history' => 'View History',
+	'create history' => 'Create History',
+	'update history' => 'Update History',
+	'delete history' => 'Delete History',
 ];
