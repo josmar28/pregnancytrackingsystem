@@ -14,7 +14,6 @@ modulesRoutes.forEach(function (item) {
     path: "/" + item.name,
     name: `${item.name}.index`,
     meta: {
-      middleware: [ensureCsrfTokenSet, authenticated, authorized],
       resource: item.name,
       permission: {
         action: "viewAny",

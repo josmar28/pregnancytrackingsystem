@@ -42,16 +42,8 @@
       </b-card-body>
     </b-card>
 
-    <list-table
-      resource="histories"
-      api-path="/api/histories"
-      :filters="filters"
-      :columns="columns"
-      :actions="actions"
-    >
-    </list-table>
-
-    <patient-list-modal v-model="showPatientListModal"></patient-list-modal>
+    <patient-list-modal resource="patients" v-model="showPatientListModal">
+    </patient-list-modal>
   </div>
 </template>
 <script>

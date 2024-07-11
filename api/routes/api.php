@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\UploadController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Patient\PatientCtrl;
+use App\Http\Controllers\History\HistoryCtrl;
 
 /*
 |--------------------------------------------------------------------------

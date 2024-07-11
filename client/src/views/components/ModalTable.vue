@@ -57,7 +57,7 @@
     </p>
     <b-table
       :busy="processing"
-      ref="table"
+      ref="selectableTable"
       class="position-relative"
       :items="fetchData"
       responsive
@@ -66,11 +66,10 @@
       show-empty
       empty-text="No matching records found"
       striped
-      selectable
       :select-mode="selectMode"
       :sort-by.sync="internalSort.column"
       :sort-desc.sync="internalSort.isSortDirDesc"
-      @row-selected="myRowClickHandler"
+      @row-clicked="onRowClicked"
     >
       <template v-for="(_, name) in $scopedSlots" #[name]="data">
         <slot :name="name" v-bind="data" />
@@ -215,9 +214,11 @@ export default {
     };
   },
   methods: {
-    myRowClickHandler(record, index) {
-      this.dismissCountDown = this.dismissSecs;
-      this.selected = record;
+    onRowClicked(item) {
+      this.$router.push({
+        name: `${this.resource}.edit`,
+        params: { id: item.id },
+      });
     },
     fetchData(ctx, callback) {
       if (this.processing === true) return false;
